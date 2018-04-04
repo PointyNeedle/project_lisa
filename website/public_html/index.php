@@ -32,7 +32,7 @@ $userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Website Name</a>
+            <a class="navbar-brand" href="#">Project LISA</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
@@ -46,8 +46,8 @@ $userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">
                         <span
-                            class="glyphicon glyphicon-user"></span>&nbsp;Logged
-                        in: <?php echo $userRow['email']; ?>
+                            class="glyphicon glyphicon-user"></span>&nbsp;Loggato
+                        come: <?php echo $userRow['email']; ?>
                         &nbsp;<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="logout.php?logout"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Logout</a>
@@ -65,7 +65,7 @@ $userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
 <div class="container">
     <!-- Jumbotron-->
     <div class="jumbotron">
-        <h1>Hello, <?php echo $userRow['username']; ?></h1>
+        <h1>Ciao, <?php echo $userRow['username']; ?></h1>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque at auctor est, in convallis eros. Nulla
             facilisi. Donec ipsum nulla, hendrerit nec mauris vitae, lobortis egestas tortor. </p>
         <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>

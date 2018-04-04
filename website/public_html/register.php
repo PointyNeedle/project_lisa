@@ -114,8 +114,7 @@ if (isset($_POST['signup'])) {
                 </div>
 
                 <div class="checkbox">
-                    <label><input type="checkbox" id="TOS" value="This"><a href="#">I agree with
-                            terms of service</a></label>
+                    <label><input type="checkbox" id="TOS" value="This"><a href="#">Aderisco ai termini del servizio</a></label>
                 </div>
 
                 <div class="form-group">
