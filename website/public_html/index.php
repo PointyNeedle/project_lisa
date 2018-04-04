@@ -68,7 +68,7 @@ $userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
             <h2>Example body text</h2>
             <p>Nullam quis risus eget <a href="#">urna mollis ornare</a> vel eu leo. Cum sociis natoque penatibus et
                 magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula.</p>
-            <img id="test" src="assets\img\test.jpg">
+            <img style="width:384px; height:384px;" src="assets\img\test.jpg">
 
         </div>
 
