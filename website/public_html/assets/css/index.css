@@ -6,3 +6,8 @@ body {
     margin-bottom: 30px;
     padding: 40px 15px;
 }
+
+#test {
+    width:256px;
+    height:256px;
+}
