@@ -63,16 +63,9 @@ $userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
 
 
 <div class="container">
-    <!-- Jumbotron-->
-    <div class="jumbotron">
-        <h1>Ciao, <?php echo $userRow['username']; ?></h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque at auctor est, in convallis eros. Nulla
-            facilisi. Donec ipsum nulla, hendrerit nec mauris vitae, lobortis egestas tortor. </p>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
-    </div>
-
     <div class="row">
         <div class="col-lg-12">
+            <h1>Ciao, <?php echo $userRow['username']; ?></h1>
             <h2>Example body text</h2>
             <p>Nullam quis risus eget <a href="#">urna mollis ornare</a> vel eu leo. Cum sociis natoque penatibus et
                 magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula.</p>
