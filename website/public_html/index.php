@@ -32,13 +32,12 @@ $userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Project LISA</a>
+            <a class="navbar-brand" href="info.html">Project LISA</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">First Link</a></li>
-                <li><a href="#">Second Link</a></li>
-                <li><a href="#">Third Link</a></li>
+                <li><a href=".">Dashboard</a></li>
+                <li><a href="userinfo.php">Profilo</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
 
