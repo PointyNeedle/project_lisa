@@ -59,9 +59,6 @@ $userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
     </div>
 </nav>
 
-
-
-
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
@@ -69,14 +66,28 @@ $userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
             <h2>Example body text</h2>
             <p>Nullam quis risus eget <a href="#">urna mollis ornare</a> vel eu leo. Cum sociis natoque penatibus et
                 magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula.</p>
-            <img style="width:384px; height:384px;" src="assets\img\test.jpg">
-
+            <div id="map" style="height: 512px"></div>
         </div>
-
-
     </div>
 </div>
 
+<script>
+  function initMap() {
+    var myLatLng = { lat: -25.363, lng: 131.044 };
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 10,
+      center: myLatLng
+    });
+
+    var marker = new google.maps.Marker({
+      position: myLatLng,
+      map: map,
+      title: 'Hello World!'
+    });
+  }
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
 
