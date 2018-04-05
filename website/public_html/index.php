@@ -15,7 +15,7 @@ $userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
 <!DOCTYPE html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Ciao, <?php echo $userRow['email']; ?></title>
+    <title>Ciao, <?php echo $userRow['username']; ?></title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css" type="text/css"/>
     <link rel="stylesheet" href="assets/css/index.css" type="text/css"/>
     <link rel="shortcut icon" href="assets/img/favicon.ico">
@@ -47,7 +47,7 @@ $userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
                        aria-expanded="false">
                         <span
                             class="glyphicon glyphicon-user"></span>&nbsp;Loggato
-                        come: <?php echo $userRow['email']; ?>
+                        come: <?php echo $userRow['username']; ?>
                         &nbsp;<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="logout.php?logout"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Logout</a>
