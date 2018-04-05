@@ -46,8 +46,8 @@ $userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">
                         <span
-                            class="glyphicon glyphicon-user"></span>&nbsp;Loggato
-                        come: <?php echo $userRow['username']; ?>
+                            class="glyphicon glyphicon-user"></span>&nbsp;
+                           <?php echo $userRow['username']; ?>
                         &nbsp;<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="logout.php?logout"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Logout</a>
@@ -63,9 +63,7 @@ $userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
     <div class="row">
         <div class="col-lg-12">
             <h1>Ciao, <?php echo $userRow['username']; ?></h1>
-            <h2>Example body text</h2>
-            <p>Nullam quis risus eget <a href="#">urna mollis ornare</a> vel eu leo. Cum sociis natoque penatibus et
-                magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula.</p>
+            <p>Qui sotto puoi visualizzare l'ultima posizione del tuo dispositivo LISA</p>
             <div id="map" style="height: 512px"></div>
         </div>
     </div>
