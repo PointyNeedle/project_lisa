@@ -18,6 +18,7 @@ $userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
     <title>Ciao, <?php echo $userRow['email']; ?></title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css" type="text/css"/>
     <link rel="stylesheet" href="assets/css/index.css" type="text/css"/>
+    <link rel="shortcut icon" href="assets/img/favicon.ico">
 </head>
 <body>
 

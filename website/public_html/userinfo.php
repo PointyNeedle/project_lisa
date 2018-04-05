@@ -27,7 +27,7 @@ $userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <link rel="shortcut icon" href="">
+    <link rel="shortcut icon" href="assets/img/favicon.ico">
   </head>
   <body>
     <p> <?php echo $userRow['username']; ?> </p>
