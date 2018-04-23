@@ -58,6 +58,7 @@ if (isset($_POST['signup'])) {
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Registrazione</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css" type="text/css"/>
     <link rel="stylesheet" href="assets/css/style.css" type="text/css"/>
     <link rel="shortcut icon" href="assets/img/favicon.ico">
