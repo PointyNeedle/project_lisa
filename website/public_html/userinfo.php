@@ -10,7 +10,11 @@ if (!isset($_SESSION['user'])) {
 // recupera i dati dell'utente che ha effettuato il login
 $res = $conn->query("SELECT * FROM users WHERE id=" . $_SESSION['user']);
 $userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
-
+// controllo se l'utente ha registrato il proprio dispositivo LISA
+if ($userRow['codice_LISA'] == NULL)
+  $stato_LISA = 'non registrato';
+else
+  $stato_LISA = 'registrato';
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +34,8 @@ $userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
     <link rel="shortcut icon" href="assets/img/favicon.ico">
   </head>
   <body>
-    <p> <?php echo $userRow['username']; ?> </p>
-    <p> <?php echo $userRow['email']; ?> </p>
+    <p>Username: <?php echo $userRow['username']; ?> </p>
+    <p>Email: <?php echo $userRow['email']; ?> </p>
+    <p>Stato LISA: <?php echo $stato_LISA; ?></p>
   </body>
 </html>
