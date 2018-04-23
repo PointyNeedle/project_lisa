@@ -7,6 +7,25 @@ if (!isset($_SESSION['user'])) {
     header("Location: login.php");
     exit;
 }
+
+// l'utente vuole registrare il proprio LISA
+if (isset($_POST['seriale']))
+  {
+    $seriale = $_POST['seriale'];
+    // controllo se il LISA già è registrato
+    $risultato = $conn->query("SELECT * FROM users WHERE codice_LISA=" . $seriale);
+    //TODO controllo se il LISA è disponibile per la registrazione
+    // se non è registrato da nessuno, associa il LISA all'utente
+    if ($risultato->num_rows == 0)
+      {
+        $query = $conn->prepare("UPDATE users SET codice_LISA = ? WHERE users.id = ?");
+        $query->bind_param("ii", $seriale, $_SESSION['user']);
+        $query->execute();
+        $query->close();
+      }
+    else
+      echo "Errore: LISA già registrato";
+  }
 // recupera i dati dell'utente che ha effettuato il login
 $res = $conn->query("SELECT * FROM users WHERE id=" . $_SESSION['user']);
 $userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
@@ -37,5 +56,15 @@ else
     <p>Username: <?php echo $userRow['username']; ?> </p>
     <p>Email: <?php echo $userRow['email']; ?> </p>
     <p>Stato LISA: <?php echo $stato_LISA; ?></p>
+    <?php
+    if ($userRow['codice_LISA'] == NULL)
+      echo(
+      '<p> Inserisci il codice seriale del tuo LISA per registrarlo </p>
+      <form method="POST" action="userinfo.php">
+        <input type="text" name="seriale">
+        <input type="submit">
+      </form>'
+      );
+    ?>
   </body>
 </html>
