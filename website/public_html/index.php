@@ -7,7 +7,7 @@ if (!isset($_SESSION['user'])) {
     header("Location: login.php");
     exit;
 }
-// select logged in users detail
+// seleziona le informazioni dell'utente loggato
 $res = $conn->query("SELECT * FROM users WHERE id=" . $_SESSION['user']);
 $userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
 

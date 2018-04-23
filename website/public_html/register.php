@@ -13,10 +13,10 @@ if (isset($_POST['signup'])) {
     $email = trim($_POST['email']);
     $upass = trim($_POST['pass']);
 
-    // hash password with SHA256;
+    // hash della password con SHA-256
     $password = hash('sha256', $upass);
 
-    // check email exist or not
+    // controllo se l'email esiste oppure no
     $stmt = $conn->prepare("SELECT email FROM users WHERE email=?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -25,8 +25,7 @@ if (isset($_POST['signup'])) {
 
     $count = $result->num_rows;
 
-    if ($count == 0) { // if email is not found add user
-
+    if ($count == 0) { // se l'email non viene trovata, aggiungi utente
 
         $stmts = $conn->prepare("INSERT INTO users(username,email,password) VALUES(?, ?, ?)");
         $stmts->bind_param("sss", $uname, $email, $password);
@@ -35,7 +34,7 @@ if (isset($_POST['signup'])) {
 
         $user_id = mysqli_insert_id($conn);
         if ($user_id > 0) {
-            $_SESSION['user'] = $user_id; // set session and redirect to index page
+            $_SESSION['user'] = $user_id; // setta la variabile di sessione e redirect alla dashboard
             if (isset($_SESSION['user'])) {
                 print_r($_SESSION);
                 header("Location: index.php");

@@ -3,7 +3,7 @@ ob_start();
 session_start();
 require_once 'dbconnect.php';
 
-// if session is set direct to index
+// se la variabile di sessione è settata, redirect alla dashboard
 if (isset($_SESSION['user'])) {
     header("Location: index.php");
     exit;
@@ -13,12 +13,12 @@ if (isset($_POST['btn-login'])) {
     $email = $_POST['email'];
     $upass = $_POST['pass'];
 
-    $password = hash('sha256', $upass); // password hashing using SHA256
+    $password = hash('sha256', $upass); // hash della password con SHA-256
     $stmt = $conn->prepare("SELECT id, username, password FROM users WHERE email= ?");
     $stmt->bind_param("s", $email);
-    /* execute query */
+    // esegui query di ricerca utente
     $stmt->execute();
-    //get result
+    // ottieni risultato
     $res = $stmt->get_result();
     $stmt->close();
 
