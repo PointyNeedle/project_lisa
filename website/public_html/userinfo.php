@@ -9,17 +9,17 @@ if (!isset($_SESSION['user'])) {
 }
 
 // l'utente vuole registrare il proprio LISA
-if (isset($_POST['seriale']))
+if (isset($_POST['serial']))
   {
-    $seriale = $_POST['seriale'];
+    $serial = $_POST['serial'];
     // controllo se il LISA già è registrato
-    $risultato = $conn->query("SELECT * FROM users WHERE codice_LISA=" . $seriale);
+    $risultato = $conn->query("SELECT * FROM users WHERE codice_LISA=" . $serial);
     //TODO controllo se il LISA è disponibile per la registrazione
     // se non è registrato da nessuno, associa il LISA all'utente
     if ($risultato->num_rows == 0)
       {
         $query = $conn->prepare("UPDATE users SET codice_LISA = ? WHERE users.id = ?");
-        $query->bind_param("ii", $seriale, $_SESSION['user']);
+        $query->bind_param("ii", $serial, $_SESSION['user']);
         $query->execute();
         $query->close();
       }
@@ -59,9 +59,9 @@ else
     <?php
     if ($userRow['codice_LISA'] == NULL)
       echo(
-      '<p> Inserisci il codice seriale del tuo LISA per registrarlo </p>
+      '<p> Inserisci il codice serial del tuo LISA per registrarlo </p>
       <form method="POST" action="userinfo.php">
-        <input type="text" name="seriale">
+        <input type="text" name="serial">
         <input type="submit">
       </form>'
       );
