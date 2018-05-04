@@ -7,51 +7,66 @@ if (isset($_SESSION['user']) != "") {
 }
 include_once 'dbconnect.php';
 
-if (isset($_POST['signup'])) {
+if (isset($_POST['signup'])) 
+  {
 
-    $uname = trim($_POST['uname']); // get posted data and remove whitespace
-    $email = trim($_POST['email']);
-    $upass = trim($_POST['pass']);
+      $uname = trim($_POST['uname']); // ottieni dati ricevuti in POST rimuovendo gli spazi agli estremi
+      $email = trim($_POST['email']);
+      $upass = trim($_POST['pass']);
+      $serial = trim($_POST['serial']);
 
-    // hash della password con SHA-256
-    $password = hash('sha256', $upass);
+      // hash della password con SHA-256
+      $password = hash('sha256', $upass);
 
-    // controllo se l'email esiste oppure no
-    $stmt = $conn->prepare("SELECT email FROM users WHERE email=?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $stmt->close();
+      // controllo se l'email esiste oppure no
+      $stmt = $conn->prepare("SELECT email FROM users WHERE email=?");
+      $stmt->bind_param("s", $email);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      $stmt->close();
 
-    $count = $result->num_rows;
+      $count = $result->num_rows;
 
-    if ($count == 0) { // se l'email non viene trovata, aggiungi utente
-
-        $stmts = $conn->prepare("INSERT INTO users(username,email,password) VALUES(?, ?, ?)");
-        $stmts->bind_param("sss", $uname, $email, $password);
-        $res = $stmts->execute();//get result
-        $stmts->close();
-
-        $user_id = mysqli_insert_id($conn);
-        if ($user_id > 0) {
-            $_SESSION['user'] = $user_id; // setta la variabile di sessione e redirect alla dashboard
-            if (isset($_SESSION['user'])) {
-                print_r($_SESSION);
-                header("Location: index.php");
-                exit;
+      if ($count == 0) 
+        { // se l'email non viene trovata, aggiungi utente
+          // controllo se il LISA già è registrato
+          $risultato = $conn->query("SELECT * FROM users WHERE codice_LISA=" . $serial);
+          // se non è registrato da nessuno, associa il LISA all'utente
+          if ($risultato->num_rows == 0)
+            {
+              $query = $conn->prepare("INSERT INTO users(username, email, password, codice_LISA) VALUES(?, ?, ?, ?)");
+              $query->bind_param("sssi", $uname, $email, $password, $serial);
+              $res = $query->execute();
+              $query->close();
+              $user_id = mysqli_insert_id($conn);
+              if ($user_id > 0) 
+                {
+                  $_SESSION['user'] = $user_id; // setta la variabile di sessione e redirect alla dashboard
+                  if (isset($_SESSION['user'])) 
+                    {
+                      print_r($_SESSION);
+                      header("Location: index.php");
+                      exit;
+                    }
+                } 
+              else 
+                {
+                  $errTyp = "danger";
+                  $errMSG = "Qualcosa è andato storto, prova di nuovo";
+                }
             }
-
-        } else {
-            $errTyp = "danger";
-            $errMSG = "Something went wrong, try again";
+          else 
+            {
+              $errTyp = "warning";
+              $errMSG = "LISA già registrato";
+            }
+        } 
+      else 
+        {
+          $errTyp = "warning";
+          $errMSG = "Email già in uso";
         }
-
-    } else {
-        $errTyp = "warning";
-        $errMSG = "Email is already used";
-    }
-
-}
+  }
 ?>
 <!DOCTYPE html>
 <head>
@@ -112,6 +127,12 @@ if (isset($_POST['signup'])) {
                         <input type="password" name="pass" class="form-control" placeholder="Inserisci Password"
                                required/>
                     </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <input type="text" name="serial" class="form-control" placeholder="Codice LISA" required/>
+                  </div>
                 </div>
 
                 <div class="checkbox">
