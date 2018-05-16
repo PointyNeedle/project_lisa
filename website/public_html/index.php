@@ -10,6 +10,13 @@ if (!isset($_SESSION['user'])) {
 // seleziona le informazioni dell'utente loggato
 $res = $conn->query("SELECT * FROM users WHERE id=" . $_SESSION['user']);
 $userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
+// seleziona le posizioni del dispositivo associato all'utente
+$risultato = $conn->query("SELECT posizioni.* 
+                            FROM users
+                            JOIN LISAs ON LISAs.codice_seriale=users.codice_LISA
+                            JOIN posizioni ON LISAs.codice_seriale=posizioni.codice_LISA
+                            WHERE users.id=".$userRow['id']);
+$posizioni = mysqli_fetch_all($risultato, MYSQLI_ASSOC);
 
 ?>
 <!DOCTYPE html>
@@ -64,7 +71,7 @@ $userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
     <div class="row">
         <div class="col-lg-12">
             <h1>Ciao, <?php echo $userRow['username']; ?></h1>
-            <p>Qui sotto puoi visualizzare l'ultima posizione del tuo dispositivo LISA</p>
+            <p>Qui sotto puoi visualizzare le ultime posizioni del tuo dispositivo LISA</p>
             <div id="map" style="height: 512px"></div>
         </div>
     </div>
@@ -72,19 +79,53 @@ $userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
 
 <script>
   function initMap() {
-    var myLatLng = { lat: -25.363, lng: 131.044 };
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 3,
+    // centra la mappa sulla prima coppia di coordinate
+    center: <?php printf("{lat: %f, lng: %f},", $posizioni[0]['latitudine'], $posizioni[0]['longitudine'])  ?>
+    mapTypeId: 'terrain'
+  });
 
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 10,
-      center: myLatLng
-    });
+  var coordinatePercorso = [
+    // recupera coordinate e orario e li inserisce nell'array
+    <?php
+        foreach($posizioni as $riga)
+          {
+            printf("{lat: %f, lng: %f, time: 'Posizione registrata alla seguente data/ora:<br>%s'},\n", $riga['latitudine'], $riga['longitudine'], $riga['data_ora']);
+          }
+      ?>
+  ];
 
+  var infowindow = new google.maps.InfoWindow();
+  var i;
+
+  // crea i marker e le finestre informative per ogni coppia di coordinate nell'array
+  for (i = 0; i < coordinatePercorso.length; i++) {
     var marker = new google.maps.Marker({
-      position: myLatLng,
+      position: coordinatePercorso[i],
       map: map,
       title: 'Hello World!'
     });
+
+    google.maps.event.addListener(marker, 'click', (function(marker, i) {
+      return function() {
+        infowindow.setContent(coordinatePercorso[i].time);
+        infowindow.open(map, marker);
+      }
+    })(marker, i));
   }
+
+  // crea le linee d'aria tra una coppia di coordinate e l'altra
+  var percorso = new google.maps.Polyline({
+    path: coordinatePercorso,
+    geodesic: true,
+    strokeColor: '#FF0000',
+    strokeOpacity: 1.0,
+    strokeWeight: 2
+  });
+
+  percorso.setMap(map);
+}
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
