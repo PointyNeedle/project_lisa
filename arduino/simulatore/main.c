@@ -13,22 +13,27 @@ float posizioni[2]; // [0] = latitudine, [1] = longitudine
 
 int main(void)
   {
+    // setup()
     init();
 
-    // uscita dal ciclo di polling solo in caso di situazione anomala
-    // (auto in movimento mentre l'utente non è loggato)
-    while (!in_movimento && loggato)
-    {
-      controlla_autenticazione();
-      controlla_movimento();
-    }
+    // loop()
+    while(true)
+      {
+        // uscita dal ciclo di polling solo in caso di situazione anomala
+        // (auto in movimento mentre l'utente non è loggato)
+        while (!in_movimento && loggato)
+        {
+          controlla_autenticazione();
+          controlla_movimento();
+        }
 
-    // lettura coordinate gps dal sensore
-    ottieni_coordinate();
+        // lettura coordinate gps dal sensore
+        ottieni_coordinate();
 
-    // stabilisci connessione
-
-    // manda pacchetto
+        // stabilisci connessione
+        
+        // manda pacchetto
+      }
     return 0;
   }
 
