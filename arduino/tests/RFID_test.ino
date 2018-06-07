@@ -20,31 +20,48 @@ void setup()
 void loop()
 {
   getID();
-  if (readCard[0] == card[0])
+  if (checkTwo(readCard, card))
     Serial.println("KEK");
+  readCard[0] = 0x00;
 }
 
-uint8_t getID()
-{
+uint8_t getID() {
   // Getting ready for Reading PICCs
-  if (!mfrc522.PICC_IsNewCardPresent())
-  { //If a new PICC placed to RFID reader continue
+  if ( ! mfrc522.PICC_IsNewCardPresent()) { //If a new PICC placed to RFID reader continue
     return 0;
   }
-  if (!mfrc522.PICC_ReadCardSerial())
-  { //Since a PICC placed get Serial and continue
+  if ( ! mfrc522.PICC_ReadCardSerial()) {   //Since a PICC placed get Serial and continue
     return 0;
   }
   // There are Mifare PICCs which have 4 byte or 7 byte UID care if you use 7 byte PICC
   // I think we should assume every PICC as they have 4 byte UID
   // Until we support 7 byte PICCs
   Serial.println(F("Scanned PICC's UID:"));
-  for (uint8_t i = 0; i < 4; i++)
-  { //
+  for ( uint8_t i = 0; i < 4; i++) {  //
     readCard[i] = mfrc522.uid.uidByte[i];
     Serial.print(readCard[i], HEX);
   }
   Serial.println("");
   mfrc522.PICC_HaltA(); // Stop reading
   return 1;
+}
+
+boolean checkTwo(byte a[], byte b[])
+{
+  boolean match;
+  if (a[0] != 0)  // Make sure there is something in the array first
+    match = true; // Assume they match at first
+  for (uint8_t k = 0; k < 4; k++)
+  {                   // Loop 4 times
+    if (a[k] != b[k]) // IF a != b then set match = false, one fails, all fail
+      match = false;
+  }
+  if (match)
+  {              // Check to see if if match is still true
+    return true; // Return true
+  }
+  else
+  {
+    return false; // Return false
+  }
 }

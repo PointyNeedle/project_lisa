@@ -1,53 +1,57 @@
 #include <EEPROM.h>
 
-/** the current address in the EEPROM (i.e. which byte we're going to write to next) **/
 int addr = 0;
 byte card[4] = {0x6F, 0x38, 0xF9, 0x28};
+byte read_card[4];
+
 void setup()
-{
-}
-
-void loop()
-{
-  /***
-    Need to divide by 4 because analog inputs range from
-    0 to 1023 and each byte of the EEPROM can only hold a
-    value from 0 to 255.
-  ***/
-
-  int val = analogRead(0) / 4;
-
-  /***
-    Write the value to the appropriate byte of the EEPROM.
-    these values will remain there when the board is
-    turned off.
-  ***/
-
-  EEPROM.write(addr, val);
-
-  /***
-    Advance to the next address, when at the end restart at the beginning.
-
-    Larger AVR processors have larger EEPROM sizes, E.g:
-    - Arduno Duemilanove: 512b EEPROM storage.
-    - Arduino Uno:        1kb EEPROM storage.
-    - Arduino Mega:       4kb EEPROM storage.
-
-    Rather than hard-coding the length, you should use the pre-provided length function.
-    This will make your code portable to all AVR processors.
-  ***/
-  addr = addr + 1;
-  if (addr == EEPROM.length())
   {
-    addr = 0;
+    Serial.begin(9600);
   }
 
-  /***
-    As the EEPROM sizes are powers of two, wrapping (preventing overflow) of an
-    EEPROM address is also doable by a bitwise and of the length - 1.
+void loop()
+  {
+    EEPROM_read_card();
 
-    ++addr &= EEPROM.length() - 1;
-  ***/
+    if (!checkTwo(card, read_card))
+    {
+      for (addr = 0; addr < 4; addr++)
+      {
+        EEPROM.write(addr, card[addr]);
+        Serial.println(card[addr], HEX);
+      }
+    }
+    else
+      {
+        Serial.println("DONE");
+      }
+  }
 
-  delay(100);
+void EEPROM_read_card()
+  {
+    for (addr = 0; addr < 4; addr++)
+      {
+        read_card[addr] = EEPROM.read(addr);
+      }
+    return;
+  }
+
+boolean checkTwo(byte a[], byte b[])
+{
+  boolean match;
+  if (a[0] != 0)  // Make sure there is something in the array first
+    match = true; // Assume they match at first
+  for (uint8_t k = 0; k < 4; k++)
+  {                   // Loop 4 times
+    if (a[k] != b[k]) // IF a != b then set match = false, one fails, all fail
+      match = false;
+  }
+  if (match)
+  {              // Check to see if if match is still true
+    return true; // Return true
+  }
+  else
+  {
+    return false; // Return false
+  }
 }
