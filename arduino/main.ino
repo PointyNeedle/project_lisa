@@ -52,7 +52,7 @@ void controlla_movimento()
 
 void controlla_autenticazione()
 {
-  byte EEPROM_UID[4]; // UID contenuto nell'arduino
+  byte EEPROM_UID[4]; // UID contenuto nell'EEPROM dell'arduino
   byte card_UID[4] = {0x00, 0x00, 0x00, 0x00}; // UID letto dal sensore, inizializzato a 00 00 00 00
 
   // lettura degli UID
