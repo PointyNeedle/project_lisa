@@ -12,10 +12,9 @@ void leggi_UID_da_EEPROM(byte UID[]);
 void leggi_UID_da_sensore(byte UID[]);
 
 
-MFRC522 mfrc522(SS_PIN, RST_PIN); // Create MFRC522 instance
+MFRC522 mfrc522(SS_PIN, RST_PIN);
 boolean loggato, in_movimento;
 float posizioni[2];
-boolean flag, oldflag;
 
 void setup()
   {
