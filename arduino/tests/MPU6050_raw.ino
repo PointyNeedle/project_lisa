@@ -48,6 +48,7 @@ int16_t ax, ay, az;
 
 #define LED_PIN 13
 bool blinkState = false;
+float threshold = 0.339;
 
 void setup()
 {
@@ -89,10 +90,8 @@ void loop()
   /*Serial.print(axf);
   Serial.print("\t");
   Serial.print(ayf);*/
-  if(abs(axf) > 1.22 || abs(ayf) > 1.22)
-    {
-      Serial.println("REACH");
-    }
+  Serial.println(azf);
+    
 
   // blink LED to indicate activity
   blinkState = !blinkState;
