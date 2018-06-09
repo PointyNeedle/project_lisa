@@ -2,8 +2,8 @@
 #include <SPI.h> 
 #include <MFRC522.h>
 
-#define RST_PIN 9 // Configurable, see typical pin layout above
-#define SS_PIN 10 // Configurable, see typical pin layout above
+#define RST_PIN 9 
+#define SS_PIN 10 
 
 void controlla_movimento();
 void controlla_autenticazione();
@@ -21,8 +21,8 @@ void setup()
     Serial.begin(9600);
     SPI.begin();
     mfrc522.PCD_Init();
-    boolean loggato = false;
-    boolean in_movimento = false;
+    loggato = false;
+    in_movimento = false;
   }
 
 void loop()
