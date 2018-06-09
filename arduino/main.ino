@@ -1,9 +1,9 @@
 #include <EEPROM.h>
-#include <SPI.h> 
+#include <I2Cdev.h>
 #include <MFRC522.h>
-#include "Wire.h"
-#include "I2Cdev.h"
-#include "MPU6050.h"
+#include <MPU6050.h>
+#include <SPI.h> 
+#include <Wire.h>
 
 #define RST_PIN 9 
 #define SS_PIN 10 
