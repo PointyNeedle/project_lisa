@@ -96,13 +96,13 @@ void controlla_movimento()
         int numero_misurazioni = 0;
         long numero_millisecondi_corrente = millis();
         while (millis() - numero_millisecondi_corrente < 1500)
-        {
-          gy521.getAcceleration(&ax, &ay, &az);
-          numero_misurazioni++;
-          somma_ax += abs(ax);
-          somma_ay += abs(ay);
-          somma_az += abs(az);
-        }
+          {
+            gy521.getAcceleration(&ax, &ay, &az);
+            numero_misurazioni++;
+            somma_ax += abs(ax);
+            somma_ay += abs(ay);
+            somma_az += abs(az);
+          }
         // calcolo delle medie e conversione immediata in g
         axf = (somma_ax / numero_misurazioni) / 8192.0;
         ayf = (somma_ay / numero_misurazioni) / 8192.0;
