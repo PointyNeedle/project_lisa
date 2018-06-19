@@ -115,23 +115,23 @@ void controlla_movimento()
   }
 
 void controlla_autenticazione()
-{
-  byte EEPROM_UID[4]; // UID contenuto nell'EEPROM dell'arduino
-  byte card_UID[4] = {0x00, 0x00, 0x00, 0x00}; // UID letto dal sensore, inizializzato a 00 00 00 00
+  {
+    byte EEPROM_UID[4]; // UID contenuto nell'EEPROM dell'arduino
+    byte card_UID[4] = {0x00, 0x00, 0x00, 0x00}; // UID letto dal sensore, inizializzato a 00 00 00 00
 
-  // lettura degli UID
-  leggi_UID_da_EEPROM(EEPROM_UID);
-  leggi_UID_da_sensore(card_UID);
+    // lettura degli UID
+    leggi_UID_da_EEPROM(EEPROM_UID);
+    leggi_UID_da_sensore(card_UID);
 
-  // controllo se i due UID corrispondono
-  boolean corrisponde = controlla_byte_array(EEPROM_UID, card_UID);
+    // controllo se i due UID corrispondono
+    boolean corrisponde = controlla_byte_array(EEPROM_UID, card_UID);
 
-  // se corrispondono, autentica o deautentica a seconda del 
-  // valore di loggato
-  if(corrisponde)
-    loggato = !loggato;
-  return;
-}
+    // se corrispondono, autentica o deautentica a seconda del 
+    // valore di loggato
+    if(corrisponde)
+      loggato = !loggato;
+    return;
+  }
 
 void ottieni_coordinate()
   {
