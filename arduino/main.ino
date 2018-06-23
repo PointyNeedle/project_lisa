@@ -161,12 +161,12 @@ void leggi_UID_da_sensore(byte UID[])
   }
 
 boolean controlla_byte_array(byte a[], byte b[])
-{
-  boolean match = true;
-  for (int k = 0; k < 4; k++)
-  {                   
-    if (a[k] != b[k]) 
-      match = false;
+  {
+    boolean match = true;
+    for (int k = 0; k < 4; k++)
+    {                   
+      if (a[k] != b[k]) 
+        match = false;
+    }
+    return match;
   }
-  return match;
-}
