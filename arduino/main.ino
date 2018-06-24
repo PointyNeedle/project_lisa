@@ -7,9 +7,9 @@
 #include <TinyGPS.h>
 #include <Wire.h>
 
-const int numero_seriale = 2;
-#define RST_PIN 9
-#define SS_PIN 10 
+const byte NUMERO_SERIALE = 2;
+const byte RST_PIN = 9
+const byte SS_PIN = 10 
 
 void controlla_movimento();
 void controlla_autenticazione();
@@ -212,7 +212,7 @@ String costruisci_richiesta(char *host)
     richiesta_http.concat("POST /post_position.php HTTP/1.1\r\n");
     richiesta_http.concat("Host: " + String(host) + "\r\n");
     richiesta_http.concat("Connection: close\r\n");
-    richiesta_http.concat("serial=" + String(numero_seriale));
+    richiesta_http.concat("serial=" + String(NUMERO_SERIALE));
     richiesta_http.concat("&latitude=" + String(posizioni[0]));
     richiesta_http.concat("&longitude=" + String(posizioni[1]) + "\r\n\r\n");
 
