@@ -1,24 +1,33 @@
 #include <EEPROM.h>
+#include <ESP8266.h>
 #include <I2Cdev.h>
 #include <MFRC522.h>
 #include <MPU6050.h>
-#include <SPI.h> 
+#include <SPI.h>
 #include <Wire.h>
 
-#define RST_PIN 9 
+const int numero_seriale = 2;
+#define RST_PIN 9
 #define SS_PIN 10 
 
 void controlla_movimento();
 void controlla_autenticazione();
 void ottieni_coordinate();
+void stabilisci_connessione();
+String costruisci_richiesta(char *host);
+void invia_richiesta(char *richiesta, int porta, char *host);
 void leggi_UID_da_EEPROM(byte UID[]);
 void leggi_UID_da_sensore(byte UID[]);
 boolean controlla_byte_array(byte a[], byte b[]);
 
+SoftwareSerial esp8266_seriale(2, 3);
+ESP8266 esp8266(esp8266_seriale);
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 MPU6050 gy521;
 boolean loggato, in_movimento;
 float posizioni[2];
+String richiesta_String;
+char richiesta[1024];
 
 void setup()
   {
@@ -47,14 +56,20 @@ void loop()
       controlla_autenticazione();
       controlla_movimento();
     }while(!(in_movimento && !loggato));
-    
+
     // lettura coordinate gps dal sensore
     ottieni_coordinate();
 
-    // stabilisci connessione
+    // stabilisci connessione alla rete wifi, vista l'assenza 
+    // dello shield GSM
+    stabilisci_connessione();
 
-    // manda pacchetto
+    // assembla la richiesta HTTP da mandare all'API endpoint del server
+    richiesta_String = costruisci_richiesta("projectlisa.ml");
+    richiesta_String.toCharArray(richiesta, strlen(richiesta));
 
+    // invia richiesta
+    invia_richiesta(richiesta, 80, "projectlisa.ml");
   }
 
 void controlla_movimento()
@@ -135,6 +150,43 @@ void controlla_autenticazione()
 
 void ottieni_coordinate()
   {
+    return;
+  }
+
+void stabilisci_connessione()
+  {
+    // ssid e password della rete wifi alla quale ci colleghiamo
+    char *ssid = "";
+    char *password = "";
+
+    // aspetta finchè non ottieniamo una connessione all'access point
+    while(!esp8266.joinAP(ssid, password));
+
+    return;
+  }
+
+String costruisci_richiesta(char *host)
+  {
+
+    String richiesta_http;
+
+    richiesta_http.concat("POST /post_position.php HTTP/1.1\r\n");
+    richiesta_http.concat("Host: " + String(host) + "\r\n");
+    richiesta_http.concat("Connection: close\r\n");
+    richiesta_http.concat("serial=" + String(numero_seriale));
+    richiesta_http.concat("&latitude=" + String(posizioni[0]));
+    richiesta_http.concat("&longitude=" + String(posizioni[1]) + "\r\n\r\n");
+
+    return richiesta_http;
+  }
+
+void invia_richiesta(char *richiesta, int porta, char *host)
+  {
+    // crea tunnel TCP, invia la richiesta, chiudi tunnel
+    // non ci importano eventuali risposte, solo se siamo riusciti a mandare i dati
+    esp8266.createTCP(host, porta);
+    esp8266.send((const uint8_t *)richiesta, strlen(richiesta));
+    esp8266.releaseTCP();
     return;
   }
 
