@@ -59,19 +59,26 @@ void loop()
       controlla_movimento();
     }while(!(in_movimento && !loggato));
 
-    // lettura coordinate dal gps esterno
-    ottieni_coordinate();
+    // invia dati per 30 secondi, così da avere un numero 
+    // considerevole di posizioni con il quale effettuare il 
+    // tracciamento
+    long numero_millisecondi_corrente = millis();
+    while (millis() - numero_millisecondi_corrente < 30000)
+      {
+        // lettura coordinate dal gps esterno
+        ottieni_coordinate();
 
-    // stabilisci connessione alla rete wifi, vista l'assenza 
-    // dello shield GSM
-    stabilisci_connessione();
+        // stabilisci connessione alla rete wifi, vista l'assenza 
+        // dello shield GSM
+        stabilisci_connessione();
 
-    // assembla la richiesta HTTP da mandare all'API endpoint del server
-    richiesta_String = costruisci_richiesta("projectlisa.ml");
-    richiesta_String.toCharArray(richiesta, strlen(richiesta));
+        // assembla la richiesta HTTP da mandare all'API endpoint del server
+        richiesta_String = costruisci_richiesta("projectlisa.ml");
+        richiesta_String.toCharArray(richiesta, strlen(richiesta));
 
-    // invia richiesta
-    invia_richiesta(richiesta, 80, "projectlisa.ml");
+        // invia richiesta
+        invia_richiesta(richiesta, 80, "projectlisa.ml");
+      }
   }
 
 void controlla_movimento()
