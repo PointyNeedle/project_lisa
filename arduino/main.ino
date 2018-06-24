@@ -40,7 +40,7 @@ void setup()
 
     // inizializzazione accellerometro
     gy521.initialize();
-    gy521.setFullScaleAccelRange(0x01); // sensibilità impostata a ±4g
+    gy521.setFullScaleAccelRange(0x01); // intervallo impostato a ±4g
 
     //inizializzazione sensore RFID
     mfrc522.PCD_Init();
@@ -90,7 +90,7 @@ void controlla_movimento()
     // lettura accellerazioni dal sensore
     gy521.getAcceleration(&ax, &ay, &az);
 
-    // secondo il datasheet dell'MPU6050, con una sensibilità
+    // secondo il datasheet dell'MPU6050, con un intervallo
     // di ±4g il valore ottenuto deve essere diviso per 8192
 
     // conversione dati raw in g
@@ -124,7 +124,9 @@ void controlla_movimento()
         axf = (somma_ax / numero_misurazioni) / 8192.0;
         ayf = (somma_ay / numero_misurazioni) / 8192.0;
         azf = (somma_az / numero_misurazioni) / 8192.0;
-
+        
+        // se il veicolo, dopo il calcolo delle medie, non risulta in movimento,
+        // allora setta la flag di conseguenza
         if (!(axf > soglia || ayf > soglia || (azf - 0.9) > soglia))
           in_movimento = false;
       }
@@ -186,7 +188,7 @@ void ottieni_coordinate()
     
     // chiusura connessione
     esp8266.releaseTCP();
-    
+
     return;
   }
 
