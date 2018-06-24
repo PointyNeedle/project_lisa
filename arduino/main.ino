@@ -4,6 +4,7 @@
 #include <MFRC522.h>
 #include <MPU6050.h>
 #include <SPI.h>
+#include <TinyGPS.h>
 #include <Wire.h>
 
 const int numero_seriale = 2;
@@ -24,8 +25,9 @@ SoftwareSerial esp8266_seriale(2, 3);
 ESP8266 esp8266(esp8266_seriale);
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 MPU6050 gy521;
+TinyGPS gps;
 boolean loggato, in_movimento;
-float posizioni[2];
+float posizioni[2]; // [0] = latitudine, [1] = longitudine
 String richiesta_String;
 char richiesta[1024];
 
@@ -57,7 +59,7 @@ void loop()
       controlla_movimento();
     }while(!(in_movimento && !loggato));
 
-    // lettura coordinate gps dal sensore
+    // lettura coordinate dal gps esterno
     ottieni_coordinate();
 
     // stabilisci connessione alla rete wifi, vista l'assenza 
@@ -150,6 +152,41 @@ void controlla_autenticazione()
 
 void ottieni_coordinate()
   {
+    uint8_t buffer[1024];
+    // connessione allo smarthphone con Share GPS in funzione
+    esp8266.createTCP("192.168.43.1", 8000);
+
+    // ricezione dati dal tunnel TCP
+    uint32_t len = esp8266.recv(buffer, sizeof(buffer), 10000);
+
+    // se ci sono dati in ricezione, effettua l'interpretazione 
+    // delle sentences NMEA
+    if(len > 0)
+      {
+        boolean gps_pronto;
+        for (uint32_t i = 0; i < len; i++)
+          {
+            // diamo in pasto i dati ricevuti all'oggetto gps
+            // la funzione ritorna true se l'interpretazione è andata 
+            // a buon fine
+            gps_pronto = gps.encode((char)buffer[i]);
+            if(gps_pronto)
+              {
+                // variabili da usare per estrarre informazioni dall'oggetto GPS
+                long lat, lon;
+                unsigned long tempo_fix;
+
+                // lettura coordinate
+                gps.get_position(&lat, &lon, &tempo_fix);
+                posizioni[0] = lat / 1000000.0;
+                posizioni[1] = lon / 1000000.0;
+              }
+          }
+      }
+    
+    // chiusura connessione
+    esp8266.releaseTCP();
+    
     return;
   }
 
