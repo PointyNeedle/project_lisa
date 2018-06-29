@@ -8,8 +8,8 @@
 #include <Wire.h>
 
 const byte NUMERO_SERIALE = 2;
-const byte RST_PIN = 9
-const byte SS_PIN = 10 
+const byte RST_PIN = 9;
+const byte SS_PIN = 10;
 
 void controlla_movimento();
 void controlla_autenticazione();
