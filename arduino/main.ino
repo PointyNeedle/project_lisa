@@ -8,8 +8,8 @@
 #include <Wire.h>
 
 const byte NUMERO_SERIALE = 2;
-const byte RST_PIN = 9;
-const byte SS_PIN = 10;
+const byte RST_PIN = 8;
+const byte SS_PIN = 53;
 
 void controlla_movimento();
 void controlla_autenticazione();
@@ -21,8 +21,7 @@ void leggi_UID_da_EEPROM(byte UID[]);
 void leggi_UID_da_sensore(byte UID[]);
 boolean controlla_byte_array(byte a[], byte b[]);
 
-SoftwareSerial esp8266_seriale(2, 3);
-ESP8266 esp8266(esp8266_seriale);
+ESP8266 esp8266(Serial1);
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 MPU6050 gy521;
 TinyGPS gps;
@@ -34,7 +33,7 @@ char richiesta[1024];
 void setup()
   {
     // inizializzazione bus seriale, SPI e I2C
-    Serial.begin(9600);
+    Serial1.begin(9600);
     SPI.begin();
     Wire.begin();
 
@@ -251,7 +250,7 @@ void leggi_UID_da_sensore(byte UID[])
         for(int i = 0; i < 4; i++)
           {
             UID[i] = mfrc522.uid.uidByte[i];
-            Serial.println(UID[i], HEX);
+            //Serial.println(UID[i], HEX);
           }
       }
     mfrc522.PICC_HaltA(); // ferma la lettura
