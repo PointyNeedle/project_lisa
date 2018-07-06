@@ -1,11 +1,11 @@
 <?php
-  if(isset($_POST['latitude']) && isset($_POST['longitude']) && isset($_POST['serial']))
+  if(isset($_GET['latitude']) && isset($_GET['longitude']) && isset($_GET['serial']))
     {
       include_once 'dbconnect.php';
-      // ottieni dati dal form in POST
-      $latitude = $_POST['latitude'];
-      $longitude = $_POST['longitude'];
-      $serial = $_POST['serial'];
+      // ottieni dati dal form in GET
+      $latitude = $_GET['latitude'];
+      $longitude = $_GET['longitude'];
+      $serial = $_GET['serial'];
 
       // controllo presenza dispositivo nel database
       $risultato = $conn->query("SELECT * FROM users WHERE codice_LISA=" . $serial);
