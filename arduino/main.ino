@@ -162,7 +162,7 @@ void ottieni_coordinate()
   {
     uint8_t buffer[1024];
     // connessione allo smarthphone con Share GPS in funzione
-    esp8266.createTCP("192.168.43.1", 8000);
+    esp8266.createTCP(/*IP dello smartphone*/, /*porta utilizzata dall'applicazione*/);
 
     // ricezione dati dal tunnel TCP
     uint32_t len = esp8266.recv(buffer, sizeof(buffer), 10000);
