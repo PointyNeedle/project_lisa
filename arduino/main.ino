@@ -215,12 +215,14 @@ String costruisci_richiesta(char *host)
 
     String richiesta_http;
 
-    richiesta_http.concat("POST /post_position.php HTTP/1.1\r\n");
+    richiesta_http.concat("GET /post_position.php?");
+    richiesta_http.concat("serial=" + String(NUMERO_SERIALE));
+    richiesta_http.concat("&latitude=" + String(posizioni[0], 6));
+    richiesta_http.concat("&longitude=" + String(posizioni[1], 6) + " ");
+    richiesta_http.concat("HTTP/1.1\r\n");
     richiesta_http.concat("Host: " + String(host) + "\r\n");
     richiesta_http.concat("Connection: close\r\n");
-    richiesta_http.concat("serial=" + String(NUMERO_SERIALE));
-    richiesta_http.concat("&latitude=" + String(posizioni[0]));
-    richiesta_http.concat("&longitude=" + String(posizioni[1]) + "\r\n\r\n");
+    richiesta_http.concat("\r\n\r\n");
 
     return richiesta_http;
   }
