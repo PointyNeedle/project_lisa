@@ -73,7 +73,7 @@ void loop()
 
         // assembla la richiesta HTTP da mandare all'API endpoint del server
         richiesta_String = costruisci_richiesta("projectlisa.ml");
-        richiesta_String.toCharArray(richiesta, strlen(richiesta));
+        richiesta_String.toCharArray(richiesta, richiesta_String.length());
 
         // invia richiesta
         invia_richiesta(richiesta, 80, "projectlisa.ml");
