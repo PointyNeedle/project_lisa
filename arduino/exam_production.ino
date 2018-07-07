@@ -35,7 +35,7 @@ char richiesta[1024];
 void setup()
   {
     // inizializzazione bus seriale, SPI e I2C
-		Serial.begin(9600);
+    Serial.begin(9600);
     Serial1.begin(9600);
     SPI.begin();
     Wire.begin();
@@ -46,10 +46,10 @@ void setup()
 
     //inizializzazione sensore RFID
     mfrc522.PCD_Init();
-		
-		Serial.println("Connessione all'AP...");
-		esp8266.joinAP(/*SSID*/, /*password*/);
-		Serial.println("Connessione!");
+    
+    Serial.println("Connessione all'AP...");
+    esp8266.joinAP(/*SSID*/, /*password*/);
+    Serial.println("Connessione!");
 
     loggato = false;
     in_movimento = false;
@@ -61,23 +61,23 @@ void loop()
     // ovvero veicolo in movimento mentre l'utente non è loggato
     do
     {
-			Serial.print("Loggato: " + String(loggato) + "\t");
-			Serial.println("In movimento: " + String(in_movimento));
+      Serial.print("Loggato: " + String(loggato) + "\t");
+      Serial.println("In movimento: " + String(in_movimento));
       controlla_autenticazione();
       controlla_movimento();
     }while(!(in_movimento && !loggato));
-		Serial.println("Veicolo in movimento non autorizzato");
+    Serial.println("Veicolo in movimento non autorizzato");
     // invia dati per 30 secondi, così da avere un numero 
     // considerevole di posizioni con il quale effettuare il 
     // tracciamento
     long numero_millisecondi_corrente = millis();
     while (millis() - numero_millisecondi_corrente < 1000)
       {
-				Serial.println("Lettura coordinate dal sensore...");
+        Serial.println("Lettura coordinate dal sensore...");
         // lettura coordinate dal gps esterno
         ottieni_coordinate();
-				
-				//Serial.println("Stabilimento connessione...");
+        
+        //Serial.println("Stabilimento connessione...");
         // stabilisci connessione alla rete wifi, vista l'assenza 
         // dello shield GSM
         
@@ -85,16 +85,16 @@ void loop()
         // assembla la richiesta HTTP da mandare all'API endpoint del server
         //richiesta_String = costruisci_richiesta("projectlisa.ml");
         //richiesta_String.toCharArray(richiesta, richiesta_String.length());
-				
-				//Serial.println(richiesta_String);
-				
-				
-				Serial.println("Invio richiesta...");
+        
+        //Serial.println(richiesta_String);
+        
+        
+        Serial.println("Invio richiesta...");
         // invia richiesta
         //invia_richiesta(richiesta, 80, "projectlisa.ml");
-				invia_richiesta();
+        invia_richiesta();
       }
-		in_movimento = false;
+    in_movimento = false;
   }
 
 void controlla_movimento()
@@ -207,7 +207,7 @@ void ottieni_coordinate()
                 posizioni[1] = lon / 1000000.0;
               }
           }
-				Serial.println("Longitudine: " + String(posizioni[0], 6) + "\t" + "Latitudine: " + String(posizioni[1], 6));
+        Serial.println("Longitudine: " + String(posizioni[0], 6) + "\t" + "Latitudine: " + String(posizioni[1], 6));
       }
     
     // chiusura connessione
@@ -244,7 +244,7 @@ String costruisci_richiesta()
 
     return richiesta_http;
   }	
-	
+  
 /*String costruisci_richiesta(char *host)
   {
 
@@ -264,49 +264,49 @@ String costruisci_richiesta()
 
 /*void invia_richiesta(char *richiesta, int porta, char *host)
   {
-		uint8_t buffer[1024];
-		
+    uint8_t buffer[1024];
+    
     // crea tunnel TCP, invia la richiesta, chiudi tunnel
     // non ci importano eventuali risposte, solo se siamo riusciti a mandare i dati
     esp8266.createTCP(host, porta);
     esp8266.send((const uint8_t *)richiesta, strlen(richiesta));
-		
-		uint32_t len = esp8266.recv(buffer, sizeof(buffer), 10000);
-		if (len > 0)
-			{
-				for (uint32_t i = 0; i < len; i++)
-				{
-					Serial.print((char)buffer[i]);
-				}
-				Serial.print("\r\n");
-			}
-		
+    
+    uint32_t len = esp8266.recv(buffer, sizeof(buffer), 10000);
+    if (len > 0)
+      {
+        for (uint32_t i = 0; i < len; i++)
+        {
+          Serial.print((char)buffer[i]);
+        }
+        Serial.print("\r\n");
+      }
+    
     esp8266.releaseTCP();
     return;
   }*/
 
 void invia_richiesta()
-	{
-		String hello_string = costruisci_richiesta();
-		uint8_t buffer[1024];
-		char hello[1024];
-		hello_string.toCharArray(hello, hello_string.length());
-		Serial.print(hello);
-		esp8266.createTCP("projectlisa.ml", 80);
-		esp8266.send((const uint8_t *)hello, hello_string.length());
-		uint32_t len = esp8266.recv(buffer, sizeof(buffer), 10000);
-		if (len > 0)
-		{
-			Serial.print("Received:");
-			for (uint32_t i = 0; i < len; i++)
-			{
-				Serial.print((char)buffer[i]);
-			}
-			Serial.print("\r\n");
-		}
-		Serial.print(hello_string);
-	}	
-	
+  {
+    String hello_string = costruisci_richiesta();
+    uint8_t buffer[1024];
+    char hello[1024];
+    hello_string.toCharArray(hello, hello_string.length());
+    Serial.print(hello);
+    esp8266.createTCP("projectlisa.ml", 80);
+    esp8266.send((const uint8_t *)hello, hello_string.length());
+    uint32_t len = esp8266.recv(buffer, sizeof(buffer), 10000);
+    if (len > 0)
+    {
+      Serial.print("Received:");
+      for (uint32_t i = 0; i < len; i++)
+      {
+        Serial.print((char)buffer[i]);
+      }
+      Serial.print("\r\n");
+    }
+    Serial.print(hello_string);
+  }	
+  
 void leggi_UID_da_EEPROM(byte UID[])
   {
     for (int addr = 0; addr < 4; addr++)
