@@ -1,6 +1,8 @@
 # project_lisa
 Repository del progetto scolastico L.IS.A. (Lisa ISn't an Antitheft)
 
+Un dispositivo installabile sulla maggior parte dei veicoli, in grado di riconoscere colui che lo sta usando e se esso viene rubato. Nel caso succeda, la posizione viene trasmessa ad un server ed è possibile consultarla in tempo reale tramite una web app.
+
 **Aggiornamento**: 
 
 Il 06/07/2018 segna la fine dello sviluppo di questo progetto, in quanto il giorno precedente ho tenuto l'esame di maturità e quindi non ho più intenzione di mantenerlo.
